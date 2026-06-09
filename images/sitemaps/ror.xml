@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:ror="http://rorweb.com/0.1/" >
+<channel>
+  <title>ROR Sitemap for https://www.creativestartupnz.com/</title>
+  <link>https://www.creativestartupnz.com/</link>
+
+<item>
+     <link>https://www.creativestartupnz.com/</link>
+     <title>Creative Startup NZ | The Equalizer for Founders</title>
+     <description>Creative Startup NZ provides tactical digital infrastructure for New Zealand founders. War Paint, not pretty pictures. Tools, not toys.</description>
+     <ror:updatePeriod></ror:updatePeriod>
+     <ror:sortOrder>0</ror:sortOrder>
+     <ror:resourceOf>sitemap</ror:resourceOf>
+</item>
+<item>
+     <link>https://www.creativestartupnz.com/contact.php</link>
+     <title>SECURE COMMS // CSNZ</title>
+     <description>Open a secure line to Creative Startup NZ. Contact Russell Oliver for strategic consultation or immediate deployment.</description>
+     <ror:updatePeriod></ror:updatePeriod>
+     <ror:sortOrder>1</ror:sortOrder>
+     <ror:resourceOf>sitemap</ror:resourceOf>
+</item>
+<item>
+     <link>https://www.creativestartupnz.com/service-logo.php</link>
+     <title>ASSET: LOGO DESIGN // CSNZ</title>
+     <description>ASSET: LOGO DESIGN // CSNZ</description>
+     <ror:updatePeriod></ror:updatePeriod>
+     <ror:sortOrder>1</ror:sortOrder>
+     <ror:resourceOf>sitemap</ror:resourceOf>
+</item>
+<item>
+     <link>https://www.creativestartupnz.com/service-website.php</link>
+     <title>ASSET: 5 PAGE WEBSITE // CSNZ</title>
+     <description>ASSET: 5 PAGE WEBSITE // CSNZ</description>
+     <ror:updatePeriod></ror:updatePeriod>
+     <ror:sortOrder>1</ror:sortOrder>
+     <ror:resourceOf>sitemap</ror:resourceOf>
+</item>
+<item>
+     <link>https://www.creativestartupnz.com/service-seo.php</link>
+     <title>ASSET: SEO AUDIT // CSNZ</title>
+     <description>ASSET: SEO AUDIT // CSNZ</description>
+     <ror:updatePeriod></ror:updatePeriod>
+     <ror:sortOrder>1</ror:sortOrder>
+     <ror:resourceOf>sitemap</ror:resourceOf>
+</item>
+</channel>
+</rss>
+  

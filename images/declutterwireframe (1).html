@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Wireframe Dashboard | Creative Startup NZ</title>
+<style>
+    /* --- DASHBOARD UI STYLES --- */
+    :root {
+        --dash-bg: #2c3e50;
+        --dash-sidebar: #34495e;
+        --dash-text: #ecf0f1;
+        --accent-color: #e67e22;
+        
+        /* DYNAMIC WIREFRAME VARIABLES (Default: Organic/Calm) */
+        --wf-bg: #EFEDE8; /* Cream */
+        --wf-text: #333333;
+        --wf-primary: #233849; /* Navy */
+        --wf-accent: #d4a5a5; /* Dusty Pink */
+        --wf-font-head: 'Laila', serif;
+        --wf-font-body: 'Source Sans Pro', sans-serif;
+        --wf-radius: 20px;
+        --wf-border: none;
+    }
+
+    body { margin: 0; padding: 0; font-family: sans-serif; display: flex; height: 100vh; overflow: hidden; }
+    
+    /* Sidebar */
+    .sidebar { width: 300px; background: var(--dash-sidebar); color: var(--dash-text); display: flex; flex-direction: column; padding: 20px; overflow-y: auto; box-shadow: 2px 0 5px rgba(0,0,0,0.2); z-index: 10; }
+    .sidebar h2 { font-size: 1.2rem; margin-bottom: 10px; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; }
+    .sidebar h3 { font-size: 0.9rem; margin-top: 20px; margin-bottom: 10px; border-bottom: 1px solid #7f8c8d; padding-bottom: 5px; }
+    
+    /* Controls */
+    .control-group { display: flex; flex-direction: column; gap: 8px; }
+    .btn-control { background: rgba(255,255,255,0.1); border: 1px solid #7f8c8d; color: white; padding: 8px; cursor: pointer; text-align: left; transition: 0.2s; border-radius: 4px; }
+    .btn-control:hover, .btn-control.active { background: var(--accent-color); border-color: var(--accent-color); }
+    
+    /* Data Panel */
+    .data-panel { background: rgba(0,0,0,0.2); padding: 10px; border-radius: 5px; font-size: 0.8rem; margin-bottom: 20px; }
+    .data-item { margin-bottom: 5px; display: flex; justify-content: space-between; }
+    .data-label { color: #bdc3c7; }
+    .badge { background: #27ae60; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; }
+    .badge.missing { background: #c0392b; }
+
+    /* Main Content Area */
+    .main-area { flex: 1; background: #95a5a6; display: flex; flex-direction: column; position: relative; }
+    .top-bar { background: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .brand-logo { font-weight: bold; color: #2c3e50; }
+    
+    /* Wireframe Canvas */
+    .wireframe-canvas { flex: 1; overflow-y: auto; padding: 40px; background: #e0e0e0; }
+    .wireframe-page { 
+        max-width: 1200px; 
+        min-height: 1000px; 
+        background: var(--wf-bg); 
+        margin: 0 auto; 
+        box-shadow: 0 0 20px rgba(0,0,0,0.1); 
+        color: var(--wf-text);
+        font-family: var(--wf-font-body);
+        transition: all 0.3s ease;
+    }
+
+    /* --- WIREFRAME INTERNAL ELEMENTS (Global Structure) --- */
+    .wf-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .wf-nav { display: flex; gap: 20px; }
+    .wf-hero { padding: 80px 40px; text-align: center; background-size: cover; background-position: center; position: relative; }
+    .wf-hero-overlay { background: rgba(255,255,255,0.8); padding: 40px; border-radius: var(--wf-radius); display: inline-block; max-width: 600px; backdrop-filter: blur(5px); }
+    .wf-section { padding: 60px 40px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .wf-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 30px; }
+    .wf-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-top: 30px; }
+    
+    h1, h2, h3 { font-family: var(--wf-font-head); color: var(--wf-primary); }
+    .wf-btn { 
+        background: var(--wf-accent); 
+        color: white; 
+        padding: 12px 24px; 
+        text-decoration: none; 
+        border-radius: var(--wf-radius); 
+        display: inline-block; 
+        margin-top: 20px; 
+        font-weight: bold;
+        border: var(--wf-border);
+    }
+    .wf-footer { background: var(--wf-primary); color: white; padding: 40px; margin-top: auto; }
+    .wf-footer h3 { color: white; }
+
+    /* Utility Classes for Styles */
+    .img-placeholder { background: #ccc; width: 100%; height: 200px; border-radius: var(--wf-radius); object-fit: cover; }
+    
+    /* Layout Toggles (Hidden by default) */
+    .layout-option { display: none; }
+    .layout-option.active { display: block; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+
+    /* Analysis Box */
+    .analysis-box { background: #34495e; color: #ecf0f1; padding: 15px; margin: 20px; border-radius: 5px; border-left: 4px solid var(--accent-color); }
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Laila:wght@400;600;700&family=Source+Sans+Pro:wght@400;600;700&family=Montserrat:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="sidebar">
+    <div style="margin-bottom: 20px;">
+        <h1 style="font-size: 1.1rem; margin:0;">Creative Startup NZ</h1>
+        <small>Wireframe Dashboard v1.0</small>
+    </div>
+
+    <div class="data-panel">
+        <strong>Project Status</strong>
+        <div class="data-item"><span>Client:</span> <span>New Client</span></div>
+        <div class="data-item"><span>Expiry:</span> <span id="expiry-display">Calculating...</span></div>
+        <div class="data-item"><span>Status:</span> <span class="badge">Draft</span></div>
+    </div>
+
+    <h2>Controls</h2>
+
+    <h3>1. Select Page</h3>
+    <div class="control-group">
+        <button class="btn-control active" onclick="switchPage('home')">Home</button>
+        <button class="btn-control" onclick="switchPage('services')">Services / Products</button>
+        <button class="btn-control" onclick="switchPage('about')">About Us</button>
+        <button class="btn-control" onclick="switchPage('blog')">Blog / Hub</button>
+        <button class="btn-control" onclick="switchPage('contact')">Contact</button>
+    </div>
+
+    <h3>2. Select Layout</h3>
+    <div class="control-group">
+        <button class="btn-control active" onclick="switchLayout('A')">Option A: The Narrative</button>
+        <button class="btn-control" onclick="switchLayout('B')">Option B: Structured Grid</button>
+        <button class="btn-control" onclick="switchLayout('C')">Option C: Visual Hero</button>
+    </div>
+
+    <h3>3. Select Global Style</h3>
+    <div class="control-group">
+        <button class="btn-control active" onclick="switchStyle('organic')">Style: Organic Calm</button>
+        <button class="btn-control" onclick="switchStyle('structured')">Style: Corporate Structure</button>
+        <button class="btn-control" onclick="switchStyle('bold')">Style: Bold Contrast</button>
+    </div>
+
+    <h3>Tech & Analytics</h3>
+    <div class="data-panel">
+        <div class="data-item"><span>GA4 ID:</span> <span class="badge missing">Missing</span></div>
+        <div class="data-item"><span>Bing ID:</span> <span class="badge missing">Missing</span></div>
+        <div class="data-item"><span>Stripe Key:</span> <span class="badge missing">Missing</span></div>
+        <div class="data-item"><span>Recaptcha:</span> <span class="badge">Public Key Ready</span></div>
+    </div>
+</div>
+
+<div class="main-area">
+    <div class="top-bar">
+        <div class="brand-logo">Wireframe Preview Mode</div>
+        <div>
+            <span style="font-size: 0.8rem; color: #7f8c8d; margin-right: 15px;">Mobile / Desktop Responsive</span>
+            <button style="background: var(--accent-color); color: white; border: none; padding: 5px 15px; border-radius: 3px; cursor: pointer;">Download PDF</button>
+        </div>
+    </div>
+
+    <div class="wireframe-canvas">
+        
+        <div class="analysis-box">
+            <strong>Client Intelligence Analysis:</strong><br>
+            Based on the analysis of the inspiration site, we have identified a need for a <strong>"Restorative Calm"</strong> aesthetic. The design prioritizes negative space (Cream/Off-white), soft/rounded image masks, and a serif/sans-serif font pairing (Laila/Source Sans). The content flow is educational and empathetic, avoiding hard-sell tactics.
+        </div>
+
+        <div id="wf-container" class="wireframe-page">
+            <div class="wf-header">
+                <div class="logo">
+                    <img src="https://images.squarespace-cdn.com/content/v1/60c1bfb22963540e00cc9c2c/bcfab80c-819f-4cde-af48-05952d53b4de/Curate+Home+Logo+%E2%80%93badge-lines.png" style="height: 50px;">
+                </div>
+                <nav class="wf-nav">
+                    <a href="#">Home</a>
+                    <a href="#">Services</a>
+                    <a href="#">About</a>
+                    <a href="#">Blog</a>
+                    <a href="#" class="wf-btn" style="margin-top: 0; padding: 8px 15px; font-size: 0.9rem;">Book Now</a>
+                </nav>
+            </div>
+
+            <div id="page-content">
+                </div>
+
+            <div class="wf-footer">
+                <div class="wf-grid-3" style="margin-top:0;">
+                    <div>
+                        <h3>Navigation</h3>
+                        <p>Home<br>Services<br>About<br>Contact</p>
+                    </div>
+                    <div>
+                        <h3>Contact</h3>
+                        <p>[Client Email]<br>[Client Phone]<br>[Client Address]</p>
+                    </div>
+                    <div>
+                        <h3>Follow Us</h3>
+                        <p>Facebook<br>Instagram</p>
+                    </div>
+                </div>
+                <hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
+                <p style="font-size: 0.8rem; text-align: center;">© 2026 Company Name. Built by Creative Startup NZ.</p>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin: 40px; color: #555;">
+            <p>Ready to proceed?</p>
+            <a href="https://creativestartupnz.com/service-5-page-html-website.php" target="_blank" class="wf-btn" style="background:#27ae60;">Start Your 5-Page Build</a>
+            <p style="font-size: 0.8rem; margin-top: 10px;">or <a href="https://creativestartupnz.com/contact.php">Contact Russell Oliver</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- 1. EXPIRY LOGIC ---
+    // Sets expiry 7 days from Feb 15, 2026
+    const creationDate = new Date("2026-02-15T00:00:00"); 
+    const expiryDate = new Date(creationDate);
+    expiryDate.setDate(creationDate.getDate() + 7); // Add 7 days (Feb 22)
+
+    // Check if expired
+    const now = new Date(); // In a real scenario, this checks the user's system time.
+    
+    // For demonstration, we calculate days remaining
+    const timeDiff = expiryDate - now;
+    const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+    if (daysLeft <= 0) {
+        // Redirect if expired
+        window.location.href = "https://creativestartupnz.com/404.php";
+    } else {
+        document.getElementById('expiry-display').innerText = expiryDate.toDateString() + " (" + daysLeft + " days left)";
+        document.getElementById('expiry-display').style.color = daysLeft < 2 ? "red" : "white";
+    }
+
+    // --- 2. STYLE SYSTEM ---
+    const root = document.documentElement;
+
+    function switchStyle(styleName) {
+        // Reset buttons
+        document.querySelectorAll('.control-group button').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+
+        if(styleName === 'organic') {
+            root.style.setProperty('--wf-bg', '#EFEDE8'); // Cream
+            root.style.setProperty('--wf-text', '#333333');
+            root.style.setProperty('--wf-primary', '#233849'); // Navy
+            root.style.setProperty('--wf-accent', '#d4a5a5'); // Dusty Pink
+            root.style.setProperty('--wf-font-head', "'Laila', serif");
+            root.style.setProperty('--wf-font-body', "'Source Sans Pro', sans-serif");
+            root.style.setProperty('--wf-radius', '20px');
+            root.style.setProperty('--wf-border', 'none');
+        } else if (styleName === 'structured') {
+            root.style.setProperty('--wf-bg', '#ffffff');
+            root.style.setProperty('--wf-text', '#2c3e50');
+            root.style.setProperty('--wf-primary', '#2980b9');
+            root.style.setProperty('--wf-accent', '#27ae60');
+            root.style.setProperty('--wf-font-head', "'Montserrat', sans-serif");
+            root.style.setProperty('--wf-font-body', "'Montserrat', sans-serif");
+            root.style.setProperty('--wf-radius', '0px');
+            root.style.setProperty('--wf-border', '1px solid #ddd');
+        } else if (styleName === 'bold') {
+            root.style.setProperty('--wf-bg', '#f4f4f4');
+            root.style.setProperty('--wf-text', '#000000');
+            root.style.setProperty('--wf-primary', '#000000');
+            root.style.setProperty('--wf-accent', '#e74c3c');
+            root.style.setProperty('--wf-font-head', "'Playfair Display', serif");
+            root.style.setProperty('--wf-font-body', "'Source Sans Pro', sans-serif");
+            root.style.setProperty('--wf-radius', '4px');
+            root.style.setProperty('--wf-border', '2px solid black');
+        }
+    }
+
+    // --- 3. CONTENT & LAYOUT DATA ---
+    const contentData = {
+        home: {
+            heroImg: "https://images.squarespace-cdn.com/content/v1/60c1bfb22963540e00cc9c2c/964c4592-45da-4cbf-a2b1-832a6d28e8f2/yhg+pic+bedroom.jpg",
+            title: "Home Organisation, Decluttering & Housekeeping",
+            subtitle: "Transforming disorganized spaces, bringing calm and function to your home."
+        },
+        services: {
+            heroImg: "https://images.squarespace-cdn.com/content/v1/60c1bfb22963540e00cc9c2c/1682830017933-TUYPFX8H881VDT40QDOD/unsplash-image-yiU8G1K85AM.jpg",
+            title: "Our Services",
+            subtitle: "Curate the Clutter, Curate My Move, Keep It Curated."
+        },
+        about: {
+            heroImg: "https://images.squarespace-cdn.com/content/v1/60c1bfb22963540e00cc9c2c/177a1311-c54e-4c90-bf83-d7b9799cabc0/BFC6DB06-8BAF-497B-9781-626A2BDC4641.jpg",
+            title: "Kia Ora, I'm Carrie",
+            subtitle: "I have a passion for helping people, design and beautiful objects."
+        },
+        blog: {
+            title: "Tips & Tricks",
+            subtitle: "Expert advice on maintaining order in a busy world."
+        },
+        contact: {
+            title: "Ready to enjoy your home again?",
+            subtitle: "Book a free, no-obligation consultation."
+        }
+    };
+
+    let currentPage = 'home';
+    let currentLayout = 'A';
+
+    function switchPage(page) {
+        currentPage = page;
+        render();
+    }
+
+    function switchLayout(layout) {
+        currentLayout = layout;
+        render();
+    }
+
+    function render() {
+        const container = document.getElementById('page-content');
+        const data = contentData[currentPage];
+        let html = '';
+
+        // --- RENDER LOGIC BASED ON LAYOUT OPTION ---
+        
+        if (currentLayout === 'A') { 
+            // OPTION A: THE "NARRATIVE" (Close to current site style)
+            // Focus on image masks and centered text
+            html += `
+                <div class="wf-hero" style="background-image: url('${data.heroImg}'); color: white;">
+                    <div class="wf-hero-overlay">
+                        <h1>${data.title}</h1>
+                        <p>${data.subtitle}</p>
+                        <a href="#" class="wf-btn">Learn More</a>
+                    </div>
+                </div>
+                <div class="wf-section">
+                    <h2 style="text-align:center;">Our Approach</h2>
+                    <div class="wf-grid-3">
+                        <div style="text-align:center;">
+                            <img src="https://images.squarespace-cdn.com/content/v1/60c1bfb22963540e00cc9c2c/741c9bfc-935e-4d4d-9f86-b961f9bfc4d2/IMG_4205.jpg" class="img-placeholder" style="border-radius: 50% 50% 0 0;">
+                            <h3>Clutter</h3>
+                            <p>We tackle the mess so you don't have to.</p>
+                        </div>
+                        <div style="text-align:center;">
+                            <img src="https://images.squarespace-cdn.com/content/v1/60c1bfb22963540e00cc9c2c/e859829a-25e7-4cdb-9f7c-c5ec260a9a1e/IMG_1162.jpg" class="img-placeholder" style="border-radius: 50% 50% 0 0;">
+                            <h3>Moving</h3>
+                            <p>Packing and unpacking with purpose.</p>
+                        </div>
+                        <div style="text-align:center;">
+                            <img src="https://images.squarespace-cdn.com/content/v1/60c1bfb22963540e00cc9c2c/2286b8df-7fe1-4181-a5f1-8b2050b3fb3e/IMG_5371.jpg" class="img-placeholder" style="border-radius: 50% 50% 0 0;">
+                            <h3>Maintenance</h3>
+                            <p>Keeping your home curated, week after week.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } 
+        else if (currentLayout === 'B') {
+            // OPTION B: STRUCTURED (Clean Grid)
+            html += `
+                <div class="wf-section" style="background: var(--wf-primary); color: white;">
+                    <div class="wf-grid-2">
+                        <div>
+                            <h1>${data.title}</h1>
+                            <p>${data.subtitle}</p>
+                            <a href="#" class="wf-btn" style="background:white; color:var(--wf-primary);">Get Started</a>
+                        </div>
+                        <img src="${data.heroImg}" class="img-placeholder" style="height: 300px;">
+                    </div>
+                </div>
+                <div class="wf-section">
+                    <h2>Features</h2>
+                    <div class="wf-grid-3">
+                        <div style="border: 1px solid #ccc; padding: 20px;">
+                            <h3>01. Organize</h3>
+                            <p>Detailed systems for every room.</p>
+                        </div>
+                        <div style="border: 1px solid #ccc; padding: 20px;">
+                            <h3>02. Relocate</h3>
+                            <p>Stress-free moving services.</p>
+                        </div>
+                        <div style="border: 1px solid #ccc; padding: 20px;">
+                            <h3>03. Maintain</h3>
+                            <p>Regular housekeeping checks.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        else if (currentLayout === 'C') {
+            // OPTION C: VISUAL HERO (Big Impact)
+            html += `
+                <div style="height: 60vh; background-image: url('${data.heroImg}'); background-size: cover; display: flex; align-items: center; justify-content: center; text-align: center; color: white;">
+                    <div style="background: rgba(0,0,0,0.5); padding: 50px; width: 100%;">
+                        <h1 style="font-size: 3rem; color: white;">${data.title}</h1>
+                        <a href="#" class="wf-btn">Explore</a>
+                    </div>
+                </div>
+                <div class="wf-section">
+                    <div class="wf-grid-2">
+                        <img src="https://images.squarespace-cdn.com/content/v1/60c1bfb22963540e00cc9c2c/7a092a1b-bcde-4052-b04c-fc1a5d662af7/IMG_3594.jpeg" class="img-placeholder" style="height: 400px;">
+                        <div>
+                            <h2>Transform Your Space</h2>
+                            <p>${data.subtitle}</p>
+                            <ul>
+                                <li>Pantry Organization</li>
+                                <li>Wardrobe Decluttering</li>
+                                <li>Moving Assistance</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Add Contact Form placeholder to Contact Page only
+        if (currentPage === 'contact') {
+            html += `
+                <div class="wf-section">
+                    <div class="wf-grid-2">
+                        <div>
+                            <h3>Book Online</h3>
+                            <div style="background: #eee; height: 300px; display: flex; align-items: center; justify-content: center; border: 1px dashed #999;">
+                                [Acuity Scheduling Calendar Integration Placeholder]
+                            </div>
+                        </div>
+                        <div>
+                            <h3>Or Send a Message</h3>
+                            <input type="text" placeholder="Name" style="display:block; width:100%; margin-bottom:10px; padding:10px;">
+                            <input type="email" placeholder="Email" style="display:block; width:100%; margin-bottom:10px; padding:10px;">
+                            <textarea placeholder="Message" style="display:block; width:100%; margin-bottom:10px; padding:10px; height: 100px;"></textarea>
+                            <button class="wf-btn">Send Message</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        container.innerHTML = html;
+    }
+
+    // Initial Render
+    render();
+
+</script>
+</body>
+</html>
